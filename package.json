@@ -24,7 +24,8 @@
     "security:test": "echo 'Testing security hooks...' && git add . && git commit -m 'test: testing security hooks' || echo 'Security test completed'",
     "sentry:sourcemaps": "sentry-cli releases files $(node -p \"require('./package.json').version\") upload-sourcemaps .next --url-prefix '~/_next'",
     "sentry:create-release": "sentry-cli releases new $(node -p \"require('./package.json').version\")",
-    "sentry:finalize-release": "sentry-cli releases finalize $(node -p \"require('./package.json').version\")"
+    "sentry:finalize-release": "sentry-cli releases finalize $(node -p \"require('./package.json').version\")",
+    "generate:jwt-secrets": "./scripts/generate-jwt-secrets.sh"
   },
   "dependencies": {
     "@next/third-parties": "^15.4.6",

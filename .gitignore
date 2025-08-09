@@ -45,3 +45,6 @@ next-env.d.ts
 
 # sentry
 .sentry
+
+# jwt secrets
+jwt-secrets.tmp
