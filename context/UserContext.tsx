@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { User } from '@/lib/types';
+import React, { createContext, type ReactNode, useContext, useReducer } from 'react';
+import type { User } from '@/lib/types';
 
 interface AuthState {
   user: User | null;
@@ -25,7 +25,7 @@ interface UserContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   token: string | null;
-  
+
   // Actions
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -47,7 +47,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
-    
+
     case 'SET_USER':
       return {
         ...state,
@@ -55,23 +55,23 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
         isAuthenticated: true,
         isLoading: false,
       };
-    
+
     case 'SET_TOKEN':
       return { ...state, token: action.payload };
-    
+
     case 'UPDATE_USER':
       return {
         ...state,
         user: state.user ? { ...state.user, ...action.payload } : null,
       };
-    
+
     case 'LOGOUT':
     case 'CLEAR_AUTH':
       return {
         ...initialState,
         isLoading: false,
       };
-    
+
     default:
       return state;
   }
@@ -90,20 +90,19 @@ export function UserProvider({ children }: UserProviderProps) {
   const login = async (email: string, password: string) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
       // TODO: Implement actual API call here
       // const response = await authAPI.login(email, password);
-      
-      const user= {} // TODO: This is a mock user, replace with actual user
-      
+
+      const user = {}; // TODO: This is a mock user, replace with actual user
+
       const token = 'jwt-token'; // TODO: This is a mock token, replace with actual token
-      
+
       dispatch({ type: 'SET_TOKEN', payload: token });
       dispatch({ type: 'SET_USER', payload: user });
-      
+
       // TODO: Store token in localStorage or secure storage
       // localStorage.setItem('userToken', mockToken);
-      
     } catch (error) {
       console.error('Login error:', error);
       // TODO: Implement proper error handling for web
@@ -117,7 +116,7 @@ export function UserProvider({ children }: UserProviderProps) {
     try {
       // TODO: Clear token from localStorage
       // localStorage.removeItem('userToken');
-      
+
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
@@ -128,14 +127,13 @@ export function UserProvider({ children }: UserProviderProps) {
   const register = async (userData: Omit<User, 'id' | 'createdAt'>) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
       // TODO: Implement actual API call here
       // const response = await authAPI.register(userData);
-      
-      const newUser= {} // TODO: This is a mock user, replace with actual user
-      
+
+      const newUser = {}; // TODO: This is a mock user, replace with actual user
+
       dispatch({ type: 'SET_USER', payload: newUser });
-      
     } catch (error) {
       console.error('Registration error:', error);
       // TODO: Implement proper error handling for web
@@ -154,13 +152,13 @@ export function UserProvider({ children }: UserProviderProps) {
   const refreshUser = async () => {
     try {
       if (!state.token) return;
-      
+
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
       // TODO: Implement actual API call here
       // const response = await authAPI.getCurrentUser();
       // dispatch({ type: 'SET_USER', payload: response.data });
-      
+
       dispatch({ type: 'SET_LOADING', payload: false });
     } catch (error) {
       console.error('Refresh user error:', error);
@@ -174,7 +172,7 @@ export function UserProvider({ children }: UserProviderProps) {
     isLoading: state.isLoading,
     isAuthenticated: state.isAuthenticated,
     token: state.token,
-    
+
     // Actions
     login,
     logout,
@@ -183,11 +181,7 @@ export function UserProvider({ children }: UserProviderProps) {
     refreshUser,
   };
 
-  return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {
@@ -200,4 +194,4 @@ export function useUser() {
   return context;
 }
 
-export { UserContext };            
+export { UserContext };

@@ -1,23 +1,18 @@
-"use client"
+'use client';
 
-import { FC, ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type FC, type ReactNode, useState } from 'react';
 
 interface Props {
-    children: ReactNode;    
+  children: ReactNode;
 }
 
 const QueryProvider: FC<Props> = (props) => {
-    // data is not shared between different users only creating query client once per component lifecycle
+  // data is not shared between different users only creating query client once per component lifecycle
 
-     const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient());
 
-    return (
-        <QueryClientProvider client={queryClient}>
-            {props.children}
-        </QueryClientProvider>
-
-    )
-}
+  return <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+};
 
 export default QueryProvider;

@@ -1,46 +1,45 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 interface Props {
-    url : string
-    formData : Record<string, any>
-    onSubmit : ()=> void
+  url: string;
+  formData: Record<string, any>;
+  onSubmit: () => void;
 }
 
 const useFormSubmit = (props: Props) => {
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [error, setError] = useState('');
+  const [error, setError] = useState('');
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-		setIsLoading(true);
+    setIsLoading(true);
 
-		setError('');
+    setError('');
 
-		try {
-			const response = await fetch(props.url, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(props.formData),
-			});
+    try {
+      const response = await fetch(props.url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(props.formData),
+      });
 
-			const data = await response.json();
+      const data = await response.json();
 
-			if (!response.ok) {
-				throw new Error(data.error || 'Something went wrong');
-			}
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong');
+      }
 
-			props.onSubmit();
-            
-		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Something went wrong');
-		} finally {
-			setIsLoading(false);
-		}
-	};
+      props.onSubmit();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    return { isLoading, error, handleSubmit };
+  return { isLoading, error, handleSubmit };
 };
 
 export default useFormSubmit;

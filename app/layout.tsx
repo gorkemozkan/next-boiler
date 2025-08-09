@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { APP_CONFIG } from "@/lib/constants";
-import QueryProvider from "@/components/Providers/QueryProvider";
-import { UserProvider } from "@/context/UserContext";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import QueryProvider from '@/components/Providers/QueryProvider';
+import { UserProvider } from '@/context/UserContext';
+import { APP_CONFIG } from '@/lib/constants';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
@@ -29,9 +29,7 @@ export default function RootLayout(props: Readonly<Props>) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryProvider>
-          <UserProvider>
-            {props.children}
-          </UserProvider>
+          <UserProvider>{props.children}</UserProvider>
         </QueryProvider>
       </body>
     </html>
