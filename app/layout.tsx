@@ -1,3 +1,4 @@
+import { GoogleTagManager } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -28,6 +29,9 @@ export default function RootLayout(props: Readonly<Props>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {APP_CONFIG.GOOGLE_TAG_MANAGER_ID && (
+          <GoogleTagManager gtmId={APP_CONFIG.GOOGLE_TAG_MANAGER_ID} />
+        )}
         <QueryProvider>
           <UserProvider>{props.children}</UserProvider>
         </QueryProvider>

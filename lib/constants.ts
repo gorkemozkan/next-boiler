@@ -15,6 +15,7 @@ export const APP_CONFIG = {
   ENVIRONMENT: process.env.NODE_ENV || 'development',
   PORT: parseInt(process.env.PORT || '3000', 10),
   HOSTNAME: process.env.HOSTNAME || 'localhost',
+  GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID || '',
 } as const;
 
 export const LOCAL_STORAGE_KEYS = {
