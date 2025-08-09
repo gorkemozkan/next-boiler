@@ -1,10 +1,11 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
+import { DB_CONFIG } from '@/lib/constants';
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL as string,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  connectionString: DB_CONFIG.URL,
+  ssl: true,
 });
 
 export const db = drizzle(pool);

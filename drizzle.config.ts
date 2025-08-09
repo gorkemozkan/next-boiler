@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
+import { DB_CONFIG } from '@/lib/constants';
 
-if (!process.env.DATABASE_URL) {
+if (!DB_CONFIG.URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 
@@ -10,7 +11,7 @@ export default defineConfig({
   schema: './lib/schema.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: DB_CONFIG.URL,
   },
   verbose: true,
   strict: true,

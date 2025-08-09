@@ -16,6 +16,4 @@ export const LOCAL_STORAGE_KEYS = {
   REFRESH_TOKEN: 'refresh-token',
 } as const;
 
-export const DB_CONFIG = {
-  URL: process.env.DATABASE_URL!,
-} as const;
+export const DB_CONFIG = { URL: process.env.DATABASE_URL as string } as const;
