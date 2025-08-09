@@ -2,19 +2,19 @@
 
 A modern, production-ready Next.js boilerplate with TypeScript, authentication, database integration, and comprehensive tooling.
 
-## ✨ Features
+## Features
 
-- ⚡ **Next.js 15** with App Router and TypeScript
-- 🔐 **Authentication** with JWT tokens and NextAuth.js
-- 🗄️ **Database** with Drizzle ORM and PostgreSQL
-- 🎨 **Styling** with Tailwind CSS and shadcn/ui components
-- 📱 **Responsive** design with mobile-first approach
-- 🚀 **Performance** optimized with modern React patterns
-- 🛠️ **Developer Experience** with Biome, Husky, and comprehensive tooling
-- 🔒 **Security** with proper environment variable management
-- 📊 **Monitoring** ready with Sentry and analytics support
+- **Next.js 15** with App Router and TypeScript
+- **Authentication** with JWT tokens and NextAuth.js
+- **Database** with Drizzle ORM and PostgreSQL
+- **Styling** with Tailwind CSS and shadcn/ui components
+- **Responsive** design with mobile-first approach
+- **Performance** optimized with modern React patterns
+- **Developer Experience** with Biome, Husky, and comprehensive tooling
+- **Security** with proper environment variable management
+- **Monitoring** ready with Sentry and analytics support
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -60,9 +60,9 @@ A modern, production-ready Next.js boilerplate with TypeScript, authentication, 
    npm run dev
    ```
 
-Your app will be running at [http://localhost:3000](http://localhost:3000) 🎉
+Your application will be running at [http://localhost:3000](http://localhost:3000)
 
-## 🔧 Environment Variables
+## Environment Variables
 
 ### Required Variables
 
@@ -119,7 +119,7 @@ ANALYTICS_ID="your-analytics-id"
 - **`env.example`** - Template for production
 - **`env.local.example`** - Template for local development
 
-## 🗄️ Database
+## Database
 
 This project uses **Drizzle ORM** with **PostgreSQL** for robust database management.
 
@@ -151,7 +151,7 @@ const dbUrl = DB_CONFIG.URL;
 const dbHost = DB_CONFIG.HOST;
 ```
 
-## 🛠️ Development Tools
+## Development Tools
 
 ### Code Quality with Biome
 
@@ -188,7 +188,7 @@ Pre-commit hooks ensure code quality:
 - Run linting checks
 - Type checking
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 next-boiler/
@@ -212,7 +212,7 @@ next-boiler/
 └── public/                 # Static assets
 ```
 
-## 🔐 Authentication
+## Authentication
 
 The boilerplate includes a complete authentication system:
 
@@ -240,14 +240,14 @@ function MyComponent() {
 }
 ```
 
-## 🎨 Styling
+## Styling
 
 - **Tailwind CSS** for utility-first styling
 - **shadcn/ui** components for consistent design
 - **CSS Modules** support
 - **Responsive design** with mobile-first approach
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 
@@ -261,14 +261,14 @@ function MyComponent() {
 2. Start production server: `npm start`
 3. Set production environment variables
 
-## 📊 Performance
+## Performance
 
 - **Image optimization** with Next.js Image component
 - **Code splitting** and lazy loading
 - **Bundle analysis** with `@next/bundle-analyzer`
 - **Performance monitoring** ready
 
-## 🔒 Security
+## Security
 
 - **Environment variable validation**
 - **JWT token security**
@@ -276,7 +276,7 @@ function MyComponent() {
 - **Input sanitization**
 - **Rate limiting ready**
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -294,18 +294,18 @@ function MyComponent() {
 - Ensure all tests pass
 - Update documentation as needed
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Next.js](https://nextjs.org/) team for the amazing framework
 - [Drizzle](https://orm.drizzle.team/) for the excellent ORM
 - [shadcn/ui](https://ui.shadcn.com/) for the beautiful components
 - [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
 
-## 📞 Support
+## Support
 
 If you have any questions or need help:
 
@@ -315,4 +315,4 @@ If you have any questions or need help:
 
 ---
 
-**Happy coding! 🚀**
+**Happy coding!**
