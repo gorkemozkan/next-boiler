@@ -94,7 +94,13 @@ export function UserProvider({ children }: UserProviderProps) {
       // TODO: Implement actual API call here
       // const response = await authAPI.login(email, password);
 
-      const user = {}; // TODO: This is a mock user, replace with actual user
+      const user: User = {
+        id: '1',
+        email: _email,
+        username: 'mockuser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }; // TODO: This is a mock user, replace with actual user
 
       const token = 'jwt-token'; // TODO: This is a mock token, replace with actual token
 
@@ -131,7 +137,13 @@ export function UserProvider({ children }: UserProviderProps) {
       // TODO: Implement actual API call here
       // const response = await authAPI.register(userData);
 
-      const newUser = {}; // TODO: This is a mock user, replace with actual user
+      const newUser: User = {
+        id: '1',
+        email: _userData.email,
+        username: _userData.username,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }; // TODO: This is a mock user, replace with actual user
 
       dispatch({ type: 'SET_USER', payload: newUser });
     } catch (error) {
