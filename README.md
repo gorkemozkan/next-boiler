@@ -2,18 +2,6 @@
 
 A modern, production-ready Next.js boilerplate with TypeScript, authentication, database integration, and comprehensive tooling.
 
-## Features
-
-- **Next.js 15** with App Router and TypeScript
-- **Authentication** with JWT tokens and NextAuth.js
-- **Database** with Drizzle ORM and PostgreSQL
-- **Styling** with Tailwind CSS and shadcn/ui components
-- **Responsive** design with mobile-first approach
-- **Performance** optimized with modern React patterns
-- **Developer Experience** with Biome, Husky, and comprehensive tooling
-- **Security** with proper environment variable management
-- **Monitoring** ready with Sentry and analytics support
-
 ## Quick Start
 
 ### Prerequisites
@@ -172,14 +160,6 @@ npm run check           # Run both formatting and linting
 npm run check:fix       # Fix all auto-fixable issues
 ```
 
-#### VS Code Integration
-
-Install the [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) for:
-- Format on save
-- Real-time linting
-- Auto-fix on save
-- Import organization
-
 ### Git Hooks with Husky
 
 Pre-commit hooks ensure code quality:
@@ -211,103 +191,12 @@ next-boiler/
 └── public/                 # Static assets
 ```
 
-## Authentication
-
-The boilerplate includes a complete authentication system:
-
-- **JWT tokens** for API authentication
-- **NextAuth.js** for session management
-- **Secure cookie handling**
-- **Refresh token rotation**
-
-### Usage
-
-```typescript
-import { useAuth } from '@/context/UserContext';
-
-function MyComponent() {
-  const { user, login, logout } = useAuth();
-  
-  if (!user) return <LoginForm />;
-  
-  return (
-    <div>
-      <p>Welcome, {user.email}!</p>
-      <button onClick={logout}>Logout</button>
-    </div>
-  );
-}
-```
-
-## Styling
-
-- **Tailwind CSS** for utility-first styling
-- **shadcn/ui** components for consistent design
-- **CSS Modules** support
-- **Responsive design** with mobile-first approach
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. Connect your GitHub repository
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
-
 ### Other Platforms
 
 1. Build the application: `npm run build`
 2. Start production server: `npm start`
 3. Set production environment variables
 
-## Performance
-
-- **Image optimization** with Next.js Image component
-- **Code splitting** and lazy loading
-- **Bundle analysis** with `@next/bundle-analyzer`
-- **Performance monitoring** ready
-
-## Security
-
-- **Environment variable validation**
-- **JWT token security**
-- **CORS configuration**
-- **Input sanitization**
-- **Rate limiting ready**
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Run quality checks: `npm run check`
-5. Commit your changes: `git commit -m 'Add amazing feature'`
-6. Push to the branch: `git push origin feature/amazing-feature`
-7. Submit a pull request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Use functional components with hooks
-- Write meaningful commit messages
-- Ensure all tests pass
-- Update documentation as needed
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [Next.js](https://nextjs.org/) team for the amazing framework
-- [Drizzle](https://orm.drizzle.team/) for the excellent ORM
-- [shadcn/ui](https://ui.shadcn.com/) for the beautiful components
-- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
-
-## Support
-
-If you have any questions or need help:
-
-1. Check the [Issues](../../issues) page
-2. Create a new issue with detailed information
-3. Join our community discussions
