@@ -18,6 +18,10 @@
     "db:studio": "drizzle-kit studio",
     "db:reset": "drizzle-kit drop && drizzle-kit push",
     "prepare": "husky",
+    "security:check": "bash .husky/_/security-check.sh",
+    "security:check:staged": "bash .husky/_/security-check.sh staged",
+    "security:check:all": "bash .husky/_/security-check.sh all",
+    "security:test": "echo 'Testing security hooks...' && git add . && git commit -m 'test: testing security hooks' || echo 'Security test completed'",
     "sentry:sourcemaps": "sentry-cli releases files $(node -p \"require('./package.json').version\") upload-sourcemaps .next --url-prefix '~/_next'",
     "sentry:create-release": "sentry-cli releases new $(node -p \"require('./package.json').version\")",
     "sentry:finalize-release": "sentry-cli releases finalize $(node -p \"require('./package.json').version\")"

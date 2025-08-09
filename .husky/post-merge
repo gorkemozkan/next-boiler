@@ -1,0 +1,93 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔄 Post-merge security check..."
+
+# Check for any new environment files that might have been added
+NEW_ENV_FILES=$(git diff --name-only HEAD@{1} HEAD | grep -E "\.(env|local|production|staging)$" || true)
+
+if [ -n "$NEW_ENV_FILES" ]; then
+  echo "⚠️  WARNING: New environment files detected after merge:"
+  echo "$NEW_ENV_FILES"
+  echo ""
+  echo "💡 Please ensure these files don't contain sensitive information:"
+  echo "   - Check if they contain real credentials or just examples"
+  echo "   - Verify they're properly added to .gitignore if they contain secrets"
+  echo "   - Consider using .env.example for templates"
+  echo ""
+  read -p "Continue? (y/N): " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "❌ Aborting due to potential security concerns"
+    exit 1
+  fi
+fi
+
+# Check for any new files that might contain secrets
+NEW_FILES=$(git diff --name-only HEAD@{1} HEAD | grep -E "(config\.(js|ts|json)|secrets|credentials|key|\.pem|\.p12)" || true)
+
+if [ -n "$NEW_FILES" ]; then
+  echo "⚠️  WARNING: New potentially sensitive files detected:"
+  echo "$NEW_FILES"
+  echo ""
+  echo "💡 Please review these files for sensitive information:"
+  echo "   - Check for hardcoded API keys, passwords, or tokens"
+  echo "   - Ensure they don't contain real production credentials"
+  echo "   - Consider using environment variables instead"
+  echo ""
+  read -p "Continue? (y/N): " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "❌ Aborting due to potential security concerns"
+    exit 1
+  fi
+fi
+
+# Run a quick security scan on new/modified files
+NEW_MODIFIED_FILES=$(git diff --name-only HEAD@{1} HEAD || true)
+
+if [ -n "$NEW_MODIFIED_FILES" ]; then
+  echo "🔍 Running security scan on new/modified files..."
+  
+  # Create a temporary file list for security check
+  TEMP_FILE_LIST=$(mktemp)
+  echo "$NEW_MODIFIED_FILES" > "$TEMP_FILE_LIST"
+  
+  # Check each new/modified file for sensitive patterns
+  VIOLATIONS=0
+  
+  while IFS= read -r file; do
+    if [ -n "$file" ] && [ -f "$file" ]; then
+      # Skip binary files
+      if file "$file" | grep -q "text"; then
+        # Check for common sensitive patterns
+        if grep -qE "(password|secret|key|token)\s*[:=]\s*['\"][^'\"]{8,}['\"]" "$file" 2>/dev/null; then
+          echo "⚠️  Potential hardcoded secret found in: $file"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+        
+        if grep -qE "(sk_|pk_|AKIA|ghp_|gho_|ghu_|ghs_|ghr_)" "$file" 2>/dev/null; then
+          echo "⚠️  Potential API key found in: $file"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+      fi
+    fi
+  done < "$TEMP_FILE_LIST"
+  
+  rm "$TEMP_FILE_LIST"
+  
+  if [ $VIOLATIONS -gt 0 ]; then
+    echo ""
+    echo "⚠️  Found $VIOLATIONS potential security issues in new/modified files"
+    echo "💡 Please review and fix these issues"
+    echo ""
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      echo "❌ Aborting due to security concerns"
+      exit 1
+    fi
+  fi
+fi
+
+echo "✅ Post-merge security check completed!" 

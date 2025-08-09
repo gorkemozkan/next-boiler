@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔒 Running comprehensive security checks before push..."
+
+# Run security check on all tracked files
+. "$(dirname -- "$0")/_/security-check.sh" "all"
+
+if [ $? -ne 0 ]; then
+  echo "❌ Security check failed! Please fix all security issues before pushing."
+  echo "💡 This prevents sensitive information from being pushed to remote repositories."
+  exit 1
+fi
+
+echo "✅ Security checks passed! Proceeding with push."
+
+# Additional checks for production pushes
+CURRENT_BRANCH=$(git branch --show-current)
+REMOTE_URL=$(git remote get-url origin)
+
+if [[ "$CURRENT_BRANCH" == "main" || "$CURRENT_BRANCH" == "master" || "$CURRENT_BRANCH" == "production" ]]; then
+  echo "⚠️  Pushing to production branch: $CURRENT_BRANCH"
+  echo "🔍 Double-checking for any remaining sensitive information..."
+  
+  # Extra thorough check for production pushes
+  if git ls-files | grep -qE "\.(env|local|production|staging)$"; then
+    echo "❌ CRITICAL: Environment files found in production push!"
+    echo "   Please ensure no .env files are being pushed to production."
+    exit 1
+  fi
+  
+  echo "✅ Production push security validation passed!"
+fi 
