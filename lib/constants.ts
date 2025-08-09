@@ -12,6 +12,11 @@ export const APP_CONFIG = {
 	ENVIRONMENT: process.env.NODE_ENV || 'development',
 } as const;
 
+export const LOCAL_STORAGE_KEYS = {
+	ACCESS_TOKEN: 'access-token',
+	REFRESH_TOKEN: 'refresh-token',
+} as const;
+
 export const DB_CONFIG = {
 	URL: process.env.DATABASE_URL!,
 } as const;
