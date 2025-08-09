@@ -3,9 +3,19 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { JWT_CONFIG } from '@/lib/constants';
 
-export type JWTPayload = {};
+export interface JWTPayload {
+  userId: string;
+  email: string;
+  iat?: number;
+  exp?: number;
+}
 
-export type RefreshTokenPayload = {};
+export interface RefreshTokenPayload {
+  userId: string;
+  tokenId: string;
+  iat?: number;
+  exp?: number;
+}
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);

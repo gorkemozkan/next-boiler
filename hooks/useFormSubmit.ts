@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 interface Props {
   url: string;
-  formData: Record<string, any>;
+  formData: Record<string, unknown>;
   onSubmit: () => void;
 }
 

@@ -17,7 +17,7 @@ Sentry.init({
   debug: process.env.NODE_ENV === 'development',
 
   // Before send function to filter out certain errors
-  beforeSend(event, hint) {
+  beforeSend(event, _hint) {
     // Don't send errors from localhost in development
     if (process.env.NODE_ENV === 'development') {
       return null;

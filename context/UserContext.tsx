@@ -87,7 +87,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   // Login function
-  const login = async (email: string, password: string) => {
+  const login = async (_email: string, _password: string) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
 
@@ -124,7 +124,7 @@ export function UserProvider({ children }: UserProviderProps) {
   };
 
   // Register function
-  const register = async (userData: Omit<User, 'id' | 'createdAt'>) => {
+  const register = async (_userData: Omit<User, 'id' | 'createdAt'>) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
 

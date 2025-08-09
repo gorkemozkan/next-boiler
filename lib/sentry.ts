@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 
-export const captureException = (error: Error, context?: Record<string, any>) => {
+export const captureException = (error: Error, context?: Record<string, unknown>) => {
   Sentry.captureException(error, {
     extra: context,
   });
@@ -18,11 +18,11 @@ export const setTag = (key: string, value: string) => {
   Sentry.setTag(key, value);
 };
 
-export const setContext = (name: string, context: Record<string, any>) => {
+export const setContext = (name: string, context: Record<string, unknown>) => {
   Sentry.setContext(name, context);
 };
 
-export const withSentryErrorTracking = <T extends any[], R>(
+export const withSentryErrorTracking = <T extends unknown[], R>(
   fn: (...args: T) => Promise<R> | R,
   operationName: string
 ) => {
@@ -40,7 +40,7 @@ export const withSentryErrorTracking = <T extends any[], R>(
   };
 };
 
-export const trackDatabaseError = (error: Error, query?: string, params?: any[]) => {
+export const trackDatabaseError = (error: Error, query?: string, params?: unknown[]) => {
   captureException(error, {
     tags: {
       component: 'database',
@@ -90,7 +90,7 @@ export const trackValidationError = (errors: Record<string, string[]>, formName:
   });
 };
 
-export const withPerformanceTracking = <T extends any[], R>(
+export const withPerformanceTracking = <T extends unknown[], R>(
   fn: (...args: T) => Promise<R> | R,
   operationName: string
 ) => {
