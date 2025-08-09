@@ -311,7 +311,3 @@ If you have any questions or need help:
 1. Check the [Issues](../../issues) page
 2. Create a new issue with detailed information
 3. Join our community discussions
-
----
-
-**Happy coding!**
