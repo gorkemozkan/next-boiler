@@ -25,7 +25,14 @@
     "sentry:sourcemaps": "sentry-cli releases files $(node -p \"require('./package.json').version\") upload-sourcemaps .next --url-prefix '~/_next'",
     "sentry:create-release": "sentry-cli releases new $(node -p \"require('./package.json').version\")",
     "sentry:finalize-release": "sentry-cli releases finalize $(node -p \"require('./package.json').version\")",
-    "generate:jwt-secrets": "./scripts/generate-jwt-secrets.sh"
+    "generate:jwt-secrets": "./scripts/generate-jwt-secrets.sh",
+    "docker:build": "./scripts/docker-build.sh",
+    "docker:dev": "./scripts/docker-deploy.sh",
+    "docker:prod": "./scripts/docker-deploy.sh production",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker system prune -a --volumes"
   },
   "dependencies": {
     "@next/third-parties": "^15.4.6",
@@ -36,6 +43,7 @@
     "bcryptjs": "3.0.2",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "critters": "^0.0.23",
     "dotenv": "17.2.1",
     "drizzle-orm": "0.44.4",
     "jsonwebtoken": "9.0.2",
