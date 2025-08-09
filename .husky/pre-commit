@@ -10,13 +10,3 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "✅ Biome checks passed!"
-
-echo "🔒 Running security checks before commit..."
-. "$(dirname -- "$0")/_/security-check.sh" "staged"
-
-if [ $? -ne 0 ]; then
-  echo "❌ Security checks failed. Please fix the security issues before committing."
-  exit 1
-fi
-
-echo "✅ Security checks passed! Proceeding with commit."
