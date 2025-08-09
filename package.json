@@ -16,10 +16,11 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "db:reset": "drizzle-kit drop && drizzle-kit push",
     "prepare": "husky",
-    "sentry:sourcemaps": "sentry-cli releases files VERSION upload-sourcemaps .next --url-prefix '~/_next'",
-    "sentry:create-release": "sentry-cli releases new VERSION",
-    "sentry:finalize-release": "sentry-cli releases finalize VERSION"
+    "sentry:sourcemaps": "sentry-cli releases files $(node -p \"require('./package.json').version\") upload-sourcemaps .next --url-prefix '~/_next'",
+    "sentry:create-release": "sentry-cli releases new $(node -p \"require('./package.json').version\")",
+    "sentry:finalize-release": "sentry-cli releases finalize $(node -p \"require('./package.json').version\")"
   },
   "dependencies": {
     "@next/third-parties": "^15.4.6",

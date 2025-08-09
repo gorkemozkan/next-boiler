@@ -9,8 +9,8 @@ export const JWT_CONFIG = {
 } as const;
 
 export const APP_CONFIG = {
-  NAME: process.env.APP_NAME || 'Next Boiler',
-  DESCRIPTION: process.env.APP_DESCRIPTION || 'Next.js Boilerplate Application',
+  NAME: 'Next Boiler',
+  DESCRIPTION: 'Next.js Boilerplate Application',
   URL: process.env.APP_URL || 'http://localhost:3000',
   ENVIRONMENT: process.env.NODE_ENV || 'development',
   PORT: parseInt(process.env.PORT || '3000', 10),
@@ -64,11 +64,4 @@ export const API_KEYS = {
 export const MONITORING = {
   SENTRY_DSN: process.env.SENTRY_DSN || '',
   ANALYTICS_ID: process.env.ANALYTICS_ID || '',
-} as const;
-
-export const DEV_CONFIG = {
-  DEBUG: process.env.DEBUG || '',
-  LOG_LEVEL: process.env.LOG_LEVEL || 'info',
-  ENABLE_SWAGGER: process.env.ENABLE_SWAGGER === 'true',
-  ENABLE_GRAPHIQL: process.env.ENABLE_GRAPHIQL === 'true',
 } as const;

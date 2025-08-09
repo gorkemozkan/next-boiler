@@ -91,7 +91,7 @@ if (Object.keys(errors).length > 0) {
 ### Error Boundary Usage
 
 ```typescript
-import { SentryErrorBoundaryWrapper } from '@/components/ui/ErrorBoundary';
+import { SentryErrorBoundaryWrapper } from '@/components/ErrorBoundary';
 
 function App() {
   return (
@@ -132,6 +132,8 @@ npm run sentry:sourcemaps
 # Finalize the release
 npm run sentry:finalize-release
 ```
+
+**Note**: These scripts automatically use the version from your `package.json` file.
 
 ### Environment Configuration
 
