@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { JWT_CONFIG } from '@/lib/constants';
 
+// Test
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
