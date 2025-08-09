@@ -75,7 +75,6 @@ JWT_SECRET="your-super-secret-jwt-key-here"
 JWT_REFRESH_SECRET="your-super-secret-jwt-refresh-key-here"
 
 # NextAuth
-NEXTAUTH_SECRET="your-nextauth-secret-key-here"
 COOKIE_SECRET="your-cookie-secret-key-here"
 ```
 

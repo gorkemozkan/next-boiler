@@ -33,8 +33,6 @@ export const DB_CONFIG = {
 } as const;
 
 export const AUTH_CONFIG = {
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET as string,
   COOKIE_SECRET: process.env.COOKIE_SECRET as string,
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
 } as const;
