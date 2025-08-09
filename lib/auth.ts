@@ -3,10 +3,6 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { JWT_CONFIG } from '@/lib/constants';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
-
 export type JWTPayload = {};
 
 export type RefreshTokenPayload = {};
@@ -20,20 +16,20 @@ export async function verifyPassword(password: string, hashedPassword: string): 
 }
 
 export function generateAccessToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(payload, JWT_CONFIG.SECRET, {
     expiresIn: JWT_CONFIG.ACCESS_TOKEN_EXPIRES_IN as jwt.SignOptions['expiresIn'],
   });
 }
 
 export function generateRefreshToken(payload: RefreshTokenPayload): string {
-  return jwt.sign(payload, JWT_REFRESH_SECRET, {
+  return jwt.sign(payload, JWT_CONFIG.REFRESH_SECRET, {
     expiresIn: JWT_CONFIG.REFRESH_TOKEN_EXPIRES_IN as jwt.SignOptions['expiresIn'],
   });
 }
 
 export function verifyAccessToken(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, JWT_CONFIG.SECRET) as JWTPayload;
   } catch {
     return null;
   }
@@ -41,7 +37,7 @@ export function verifyAccessToken(token: string): JWTPayload | null {
 
 export function verifyRefreshToken(token: string): RefreshTokenPayload | null {
   try {
-    return jwt.verify(token, JWT_REFRESH_SECRET) as RefreshTokenPayload;
+    return jwt.verify(token, JWT_CONFIG.REFRESH_SECRET) as RefreshTokenPayload;
   } catch {
     return null;
   }
