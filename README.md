@@ -89,8 +89,6 @@ SMTP_USER="your-email@gmail.com"
 SMTP_PASS="your-app-password"
 
 # API Keys
-STRIPE_SECRET_KEY="sk_test_..."
-STRIPE_PUBLISHABLE_KEY="pk_test_..."
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 

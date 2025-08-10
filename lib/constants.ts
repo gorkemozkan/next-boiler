@@ -49,10 +49,6 @@ export const EXTERNAL_SERVICES = {
 } as const;
 
 export const API_KEYS = {
-  STRIPE: {
-    SECRET: process.env.STRIPE_SECRET_KEY || '',
-    PUBLISHABLE: process.env.STRIPE_PUBLISHABLE_KEY || '',
-  },
   GOOGLE: {
     CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
     CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',

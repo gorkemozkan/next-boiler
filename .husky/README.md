@@ -30,7 +30,7 @@ This directory contains Git hooks powered by Husky that help prevent sensitive i
 - **Access Tokens**: `access_token`, `accessToken`, `ACCESS_TOKEN`
 - **Client Secrets**: `client_secret`, `CLIENT_SECRET`
 - **Database Passwords**: `DATABASE_PASSWORD`, `DB_PASSWORD`, `DB_PASS`
-- **Stripe Keys**: `sk_live_`, `sk_test_`, `pk_live_`, `pk_test_`
+
 - **Google API Keys**: `AIza`, `ya29.`
 - **AWS Keys**: `AKIA[0-9A-Z]{16}`, `aws_access_key_id`, `aws_secret_access_key`
 - **GitHub Tokens**: `ghp_[a-zA-Z0-9]{36}`, `gho_[a-zA-Z0-9]{36}`, `ghu_[a-zA-Z0-9]{36}`
@@ -235,20 +235,20 @@ bash -x .husky/_/security-check.sh staged
 ### ✅ Good Practices
 ```javascript
 // Use environment variables
-const apiKey = process.env.STRIPE_API_KEY;
+const apiKey = process.env.API_KEY;
 const dbUrl = process.env.DATABASE_URL;
 
 // Use placeholder values in examples
 const exampleKey = "YOUR_API_KEY_HERE";
 
 // Use test keys only
-const testKey = "sk_test_1234567890abcdef";
+const testKey = "test_key_1234567890abcdef";
 ```
 
 ### ❌ Bad Practices
 ```javascript
 // Never hardcode secrets
-const apiKey = "sk_live_abcdefghijklmnop";
+const apiKey = "live_key_abcdefghijklmnop";
 const password = "my-super-secret-password";
 
 // Never commit real credentials
