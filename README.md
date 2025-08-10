@@ -11,7 +11,33 @@ A modern, production-ready Next.js boilerplate with TypeScript, authentication, 
 - Redis (optional, for caching)
 - SMTP service (optional, for emails)
 
-### Installation
+### Option 1: Local Development
+
+Follow the traditional setup below.
+
+### Option 2: Docker Development (Recommended)
+
+For a complete containerized development environment:
+
+```bash
+# 1. Clone and setup
+git clone <your-repo-url>
+cd next-boiler
+
+# 2. Start with Docker
+npm run docker:up
+
+# 3. Setup database
+DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:push
+
+# 4. Access the application
+# Application: http://localhost:3000
+# Health check: http://localhost:3000/api/health
+```
+
+📖 **For detailed Docker instructions, see [Docker Guide](docs/DOCKER.md) and [Quick Reference](docs/DOCKER_QUICK_REFERENCE.md)**
+
+### Installation (Local Development)
 
 1. **Clone the repository**
    ```bash
@@ -134,6 +160,42 @@ import { DB_CONFIG } from '@/lib/constants';
 // Access database configuration
 const dbUrl = DB_CONFIG.URL;
 const dbHost = DB_CONFIG.HOST;
+```
+
+## Available Scripts
+
+### Docker Commands
+
+```bash
+# Docker development
+npm run docker:up        # Start all services
+npm run docker:down      # Stop all services
+npm run docker:logs      # View logs
+npm run docker:clean     # Clean up Docker resources
+npm run docker:build     # Build Docker image
+npm run docker:dev       # Deploy to development
+npm run docker:prod      # Deploy to production
+```
+
+### Database Commands
+
+```bash
+# Database management
+npm run db:generate      # Generate migration files
+npm run db:push          # Push schema changes
+npm run db:migrate       # Run migrations
+npm run db:studio        # Open Drizzle Studio
+npm run db:reset         # Reset database (dev only)
+```
+
+### Development Commands
+
+```bash
+# Development
+npm run dev              # Start development server
+npm run build            # Build for production
+npm run start            # Start production server
+npm run type-check       # TypeScript type checking
 ```
 
 ## Development Tools

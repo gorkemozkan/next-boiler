@@ -53,16 +53,31 @@ Download and install Docker Desktop from [docker.com](https://www.docker.com/pro
    cd next-boiler
    ```
 
-2. **Start development environment**
+2. **Set up environment variables**
    ```bash
-   # Using the provided script
-   ./scripts/docker-deploy.sh
+   # Copy the example environment file
+   cp env.example .env.local
+   
+   # Update with your configuration
+   # DATABASE_URL will be set automatically by docker-compose
+   ```
+
+3. **Start the application**
+   ```bash
+   # Using npm scripts (recommended)
+   npm run docker:up
    
    # Or manually
    docker-compose up -d
    ```
 
-3. **Access the application**
+4. **Set up the database**
+   ```bash
+   # Run database migrations
+   DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:push
+   ```
+
+5. **Access the application**
    - Application: http://localhost:3000
    - Health check: http://localhost:3000/api/health
    - Database: localhost:5432
@@ -73,46 +88,51 @@ Download and install Docker Desktop from [docker.com](https://www.docker.com/pro
 ### Development Environment
 
 The development environment includes:
-- **Next.js app** with hot reload
+- **Next.js app** with production build (optimized for Docker)
 - **PostgreSQL 15** database
 - **Redis 7** cache
-- **Volume mounts** for live code changes
+- **SSL disabled** for local development
 
 ```bash
 # Start development environment
-docker-compose up -d
+npm run docker:up
 
 # View logs
-docker-compose logs -f app
+npm run docker:logs
 
 # Stop services
-docker-compose down
+npm run docker:down
 ```
 
 ### Development Workflow
 
 1. **Start services**
    ```bash
-   docker-compose up -d
+   npm run docker:up
    ```
 
-2. **Make code changes**
-   - Edit files in your local directory
-   - Changes are automatically reflected due to volume mounts
-
-3. **View logs**
+2. **Set up database (first time only)**
    ```bash
-   docker-compose logs -f app
+   DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:push
    ```
 
-4. **Restart services if needed**
+3. **Make code changes**
+   - Edit files in your local directory
+   - Rebuild container to see changes: `docker-compose up -d --build`
+
+4. **View logs**
+   ```bash
+   npm run docker:logs
+   ```
+
+5. **Restart services if needed**
    ```bash
    docker-compose restart app
    ```
 
-5. **Stop services**
+6. **Stop services**
    ```bash
-   docker-compose down
+   npm run docker:down
    ```
 
 ### Database Management
@@ -121,14 +141,17 @@ docker-compose down
 # Access PostgreSQL
 docker-compose exec db psql -U postgres -d next_boiler_dev
 
-# Run migrations
-docker-compose exec app npm run db:migrate
+# Run migrations (from host)
+DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:push
 
-# Generate types
-docker-compose exec app npm run db:generate
+# Generate migration files (from host)
+DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:generate
 
-# Open Drizzle Studio
-docker-compose exec app npm run db:studio
+# Open Drizzle Studio (from host)
+DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:studio
+
+# Check database tables
+docker-compose exec db psql -U postgres -d next_boiler_dev -c "\dt"
 ```
 
 ## Production Deployment
@@ -187,6 +210,59 @@ docker-compose -f docker-compose.prod.yml up -d --scale app=3
 
 # Stop production services
 docker-compose -f docker-compose.prod.yml down
+```
+
+## Available Commands
+
+### NPM Scripts
+
+The project includes convenient npm scripts for Docker operations:
+
+```bash
+# Start all services
+npm run docker:up
+
+# Stop all services
+npm run docker:down
+
+# View logs
+npm run docker:logs
+
+# Clean up Docker resources
+npm run docker:clean
+
+# Build Docker image
+npm run docker:build
+
+# Deploy to development
+npm run docker:dev
+
+# Deploy to production
+npm run docker:prod
+```
+
+### Manual Docker Commands
+
+```bash
+# Start services
+docker-compose up -d
+
+# Stop services
+docker-compose down
+
+# View logs
+docker-compose logs -f
+
+# Rebuild and start
+docker-compose up -d --build
+
+# Check service status
+docker-compose ps
+
+# Access container shell
+docker-compose exec app sh
+docker-compose exec db psql -U postgres
+docker-compose exec redis redis-cli
 ```
 
 ## Docker Compose
@@ -317,6 +393,43 @@ services:
       - "6380:6379"  # Map host port 6380 to container port 6379
 ```
 
+## Environment Variables
+
+### Required Environment Variables
+
+For Docker deployment, ensure these environment variables are set:
+
+```bash
+# Database Configuration
+DATABASE_URL=postgresql://postgres:password@db:5432/next_boiler_dev
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_REFRESH_SECRET=your-super-secret-jwt-refresh-key-here
+
+# Application Configuration
+NODE_ENV=production
+APP_URL=http://localhost:3000
+
+# Security
+COOKIE_SECRET=your-cookie-secret-key-here
+CORS_ORIGIN=http://localhost:3000
+
+# External Services
+REDIS_URL=redis://redis:6379
+```
+
+### Docker Compose Environment
+
+The `docker-compose.yml` automatically sets these variables:
+
+```yaml
+environment:
+  - NODE_ENV=production
+  - DATABASE_URL=postgresql://postgres:password@db:5432/next_boiler_dev
+  - REDIS_URL=redis://redis:6379
+```
+
 ### Environment-Specific Configurations
 
 ```yaml
@@ -335,20 +448,55 @@ services:
       - POSTGRES_DB=next_boiler_staging
 ```
 
-### Custom Build Arguments
+## Dockerfile Configuration
+
+### Multi-Stage Build
+
+The project uses a multi-stage Dockerfile for optimal performance:
 
 ```dockerfile
-# Dockerfile
-FROM node:18-alpine AS base
+# Stage 1: Dependencies
+FROM node:18-alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm ci
 
-ARG NODE_ENV=production
-ARG BUILD_VERSION=latest
+# Stage 2: Builder
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build
 
-ENV NODE_ENV=$NODE_ENV
-ENV BUILD_VERSION=$BUILD_VERSION
-
-# ... rest of Dockerfile
+# Stage 3: Runner
+FROM node:18-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+COPY --from=builder /app/public ./public
+RUN mkdir .next && chown nextjs:nodejs .next
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+USER nextjs
+EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+CMD ["node", "server.js"]
 ```
+
+### Key Features
+
+- **Multi-stage build** for smaller production images
+- **Non-root user** for security
+- **Standalone output** for optimal performance
+- **SSL disabled** for local development
+- **Optimized for production** with proper caching
+
+### Custom Build Arguments
 
 ```yaml
 # docker-compose.yml
@@ -376,6 +524,30 @@ kill -9 <PID>
 
 # Or use different ports
 docker-compose up -d -p 3001:3000
+```
+
+#### SSL Connection Issues
+
+If you see "The server does not support SSL connections" error:
+
+```bash
+# This is fixed in the current configuration
+# The lib/db.ts file has SSL disabled for Docker development
+# If you still see this error, rebuild the container:
+docker-compose up -d --build
+```
+
+#### Database Migration Issues
+
+If migrations fail with authentication errors:
+
+```bash
+# Use the correct database URL for local migrations
+DATABASE_URL="postgresql://postgres:password@localhost:5432/next_boiler_dev" npm run db:push
+
+# Or create the drizzle meta directory if missing
+mkdir -p drizzle/meta
+echo '{"version":"5","dialect":"postgresql","entries":[]}' > drizzle/meta/_journal.json
 ```
 
 #### Database Connection Issues
@@ -456,6 +628,38 @@ curl http://localhost:3000/api/health
 docker inspect <container-id> | grep Health -A 10
 ```
 
+### Testing the Setup
+
+After starting the containers, verify everything is working:
+
+```bash
+# 1. Check all containers are running
+docker-compose ps
+
+# 2. Test the application
+curl -s http://localhost:3000 | head -5
+
+# 3. Test the health endpoint
+curl -s http://localhost:3000/api/health | jq .
+
+# 4. Test database connection
+docker-compose exec db psql -U postgres -d next_boiler_dev -c "SELECT version();"
+
+# 5. Test Redis connection
+docker-compose exec redis redis-cli ping
+
+# 6. Check database tables
+docker-compose exec db psql -U postgres -d next_boiler_dev -c "\dt"
+```
+
+Expected output:
+- All containers should show "Up" status
+- Application should return HTML content
+- Health endpoint should return `{"status":"healthy"}`
+- Database should return PostgreSQL version
+- Redis should return "PONG"
+- Database should show the `users` table
+
 ### Performance Optimization
 
 #### Multi-Stage Builds
@@ -514,5 +718,44 @@ services:
 - ✅ Use Docker Compose for local development
 - ✅ Implement proper health checks
 - ✅ Document custom configurations
+
+## Summary
+
+This Docker setup provides a complete development and production environment for the Next.js boilerplate project with:
+
+### ✅ What's Included
+- **Next.js 15** with React 19 and TypeScript
+- **PostgreSQL 15** database with Drizzle ORM
+- **Redis 7** for caching and sessions
+- **Multi-stage Docker builds** for optimal performance
+- **Production-ready configuration** with security best practices
+- **Health checks** and monitoring endpoints
+- **Convenient npm scripts** for common operations
+
+### 🚀 Quick Commands
+```bash
+# Start everything
+npm run docker:up
+
+# Check status
+docker-compose ps
+
+# View logs
+npm run docker:logs
+
+# Stop everything
+npm run docker:down
+
+# Test health
+curl http://localhost:3000/api/health
+```
+
+### 🔧 Key Features
+- **SSL disabled** for local development
+- **Non-root user** for security
+- **Volume persistence** for database data
+- **Optimized builds** with proper caching
+- **Environment-specific** configurations
+- **Comprehensive logging** and debugging tools
 
 This Docker guide provides comprehensive coverage of containerizing the Next.js boilerplate project. Follow these practices to ensure efficient, secure, and maintainable Docker deployments. 
