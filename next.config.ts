@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
 
   // Production optimizations
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
 
