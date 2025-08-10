@@ -32,7 +32,8 @@
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
-    "docker:clean": "docker system prune -a --volumes"
+    "docker:clean": "docker system prune -a --volumes",
+    "clean:logs": "./scripts/clean-logs.sh"
   },
   "dependencies": {
     "@next/third-parties": "^15.4.6",
